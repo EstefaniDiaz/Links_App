@@ -9,13 +9,18 @@ import exphbs from 'express-handlebars';
 import path from 'path';
 import flash from 'connect-flash';
 import session from 'express-session';
-import MySQLStore from 'express-mysql-session';
+
+
+import MySQLStoreModule from 'express-mysql-session';
+const MySQLStore = MySQLStoreModule(session);
+
 import passport from 'passport';
 
 import employeesRoutes from "./routes/employees.routes.js";
 import indexRoutes from "./routes/index.js";
-
-import  helpers  from "./lib/handlebars.js";
+import authentication from './routes/authentication.js';
+import helpers  from "./lib/handlebars.js";
+import links from './routes/links.js';
 
 const app = express();
 import './lib/passport.js';
@@ -28,25 +33,20 @@ const __dirname = dirname(__filename);
 app.use(morgan("dev"));
 app.use(express.urlencoded({extended: false})); //acepta desde el formulario los datos que envian los usuarios
 app.use(express.json());
-/* app.use(session({
-    secret:'password',
-    resave: false,
-    saveUninitialized: false,
-    store: new (MySQLStore(session))({
-        createDatabaseTable: true,
-        schema: {
-            tableName: 'sessions',
-            columnNames: {
-                session_id: 'session_id',
-                expires: 'expires',
-                data: 'data'
-            }
-        }
-    }),
-})); */
-/*app.use(flash());
- app.use(passport.initialize());
-app.use(passport.session()); */
+
+
+const sessionStore = new MySQLStore({}, pool);//para el error de 
+app.use(session({
+  secret:'password',
+  resave: false,
+  saveUninitialized: false ,
+  store: sessionStore 
+}));
+
+
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session()); 
 
 //settings
 
@@ -63,16 +63,21 @@ app.set('view engine', '.hbs');
 
 
 //global Variables
-/* 
+
 app.use((req,res,next) =>{
   app.locals.success=req.flash('success');
   app.locals.message=req.flash('message');
   app.locals.user =req.user;
   next(); 
-});*/
+});
 // Routes
 app.use("/", indexRoutes);
 app.use("/api", employeesRoutes);
+
+app.use("/",authentication);
+
+app.use('/links',links);
+
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Not found" });

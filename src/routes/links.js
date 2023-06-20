@@ -1,7 +1,8 @@
-const express =require('express');
+import express from 'express';
 const router= express.Router();
-const pool = require ('../database');
-const { isLoggedIn } = require('../lib/auth');
+import pool from '../db.js';
+import { isLoggedIn } from '../lib/auth.js';
+
 
 router.get ('/add' ,isLoggedIn, (req,res)=>{
 res.render('links/add');    
@@ -56,4 +57,4 @@ res.redirect('/links');
 
 
 
-module.exports =router; 
+export default router;

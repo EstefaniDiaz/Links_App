@@ -1,8 +1,9 @@
-const express =require('express');
+import express from 'express';
 const router= express.Router();
-const pool = require ('../database');
-const passport =  require('passport');
-const { isLoggedIn,isNotLoggedIn } = require('../lib/auth');
+import pool from '../db.js';
+import passport from "passport";
+import { isLoggedIn ,isNotLoggedIn } from '../lib/auth.js';
+
 
 router.get ('/signup',isNotLoggedIn ,(req,res) =>{
 res.render('auth/signup');
@@ -71,4 +72,4 @@ router.post('/newadmin',isLoggedIn, passport.authenticate('local.newadmin', {
 }
 ));
 
-module.exports =router;
+export default router;

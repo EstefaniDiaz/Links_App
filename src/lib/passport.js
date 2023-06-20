@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import pool from '../db.js';
-import * as helpers from './helpers.js';
+import helpers from './helpers.js';
 
 passport.use('local.signin', new LocalStrategy({
   usernameField: 'username',
@@ -11,12 +11,16 @@ passport.use('local.signin', new LocalStrategy({
   const rows = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
   if (rows.length > 0) {
     const user = rows[0];
+    if (user.password) {
     const validPassword = await helpers.matchPassword(password, user.password)
     if (validPassword) {
       done(null, user, req.flash('success', 'Welcome ' + user.username));
     } else {
       done(null, false, req.flash('message', 'Incorrect Password'));
     }
+  } else {
+    done(null, false, req.flash('message', 'User does not have a password'));
+  }
   } else {
     return done(null, false, req.flash('message', 'The Username does not exists.'));
   }
