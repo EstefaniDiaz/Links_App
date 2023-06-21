@@ -3,7 +3,7 @@ import morgan from "morgan";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-import  pool from './db.js';
+import  pool  from './db.js';
 
 import exphbs from 'express-handlebars';
 import path from 'path';
@@ -16,11 +16,13 @@ const MySQLStore = MySQLStoreModule(session);
 
 import passport from 'passport';
 
-import employeesRoutes from "./routes/employees.routes.js";
+
 import indexRoutes from "./routes/index.js";
-import authentication from './routes/authentication.js';
+
 import helpers  from "./lib/handlebars.js";
-import links from './routes/links.js';
+
+import authenticationRoutes from './routes/authentication.js';
+import linksRoutes from './routes/links.js';
 
 const app = express();
 import './lib/passport.js';
@@ -42,14 +44,11 @@ app.use(session({
   saveUninitialized: false ,
   store: sessionStore 
 }));
-
-
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session()); 
 
-//settings
-
+//setting
 app.set('views',path.join(__dirname, 'views'))// les dice donde se encuentra la carpeta views
 app.engine('.hbs', exphbs.engine({
         defaultLayout: 'main',
@@ -61,9 +60,7 @@ app.engine('.hbs', exphbs.engine({
     }));
 app.set('view engine', '.hbs');
 
-
 //global Variables
-
 app.use((req,res,next) =>{
   app.locals.success=req.flash('success');
   app.locals.message=req.flash('message');
@@ -71,12 +68,9 @@ app.use((req,res,next) =>{
   next(); 
 });
 // Routes
-app.use("/", indexRoutes);
-app.use("/api", employeesRoutes);
-
-app.use("/",authentication);
-
-app.use('/links',links);
+app.use(authenticationRoutes);
+app.use('/links', linksRoutes);
+app.use('/',indexRoutes);
 
 
 app.use((req, res, next) => {
