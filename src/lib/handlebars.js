@@ -1,5 +1,5 @@
 
-import  format  from "timeago.js";
+import  { format }  from "timeago.js";
 const helpers ={};
 
 helpers.timeago = (Timestamp) => {
