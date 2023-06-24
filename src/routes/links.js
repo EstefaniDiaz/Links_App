@@ -23,8 +23,9 @@ router.post('/add',isLoggedIn, async (req, res)=>{
 
 router.get ('/',isLoggedIn, async (req, res)=>{
     const links = await pool.query('SELECT * FROM links Where user_id = ?',[req.user[0].id]);
-    console.log(links);
-    res.render("links/list", {links});
+    console.log(links[0]);
+    const links1 = links[0];
+    res.render("links/list", {links1});
     
 });
 

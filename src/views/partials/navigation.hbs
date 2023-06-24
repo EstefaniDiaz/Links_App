@@ -9,25 +9,22 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
-
-
-
-        {{#if (eq user.rol "admin")}}
-        <!-- Código si el usuario es un usuario normal -->
-        {{#if user }}
+        {{#if (eq user.[0].rol "admin")}}
+        <!-- Código si el usuario es un administrador -->
+        {{#if user}}
         <li class="nav-item">
-          <h5  class="nav-link disabled" >{{user.rol}}</h5>
-        </li> 
+          <h5 class="nav-link disabled">{{user.[0].rol}}</h5>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="/newadmin">New Admin</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="/users"> Show users </a>
-        </li> 
+          <a class="nav-link" href="/users">Show users</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-          Links
+            Links
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/links">All Links</a>
@@ -50,16 +47,15 @@
         </li> 
         {{/if}}
         {{else}}
-       
-        {{#if user }}
+        <!-- Código si el usuario es un usuario normal -->
+        {{#if user}}
         <li class="nav-item">
-          <h4  class="nav-link disabled" >{{user.rol}}</h4>
-        </li> 
-        
+          <h4 class="nav-link disabled">{{user.[0].rol}}</h4>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-          Links
+            Links
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/links">All Links</a>
@@ -82,7 +78,6 @@
         </li> 
         {{/if}}
         {{/if}}
-        
       </ul>
     </div>
   </div>

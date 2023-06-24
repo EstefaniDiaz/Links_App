@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 import  pool  from './db.js';
-
+import { DB_HOST, DB_USER, DB_PASSWORD, DB_PORT, DB_DATABASE } from "./config.js";
 import exphbs from 'express-handlebars';
 import path from 'path';
 import flash from 'connect-flash';
@@ -37,7 +37,11 @@ app.use(express.urlencoded({extended: false})); //acepta desde el formulario los
 app.use(express.json());
 
 
-const sessionStore = new MySQLStore({}, pool);//para el error de 
+const sessionStore = new MySQLStore({ host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  port: DB_PORT,
+  database: DB_DATABASE});//para el error de 
 app.use(session({
   secret:'password',
   resave: false,
@@ -64,9 +68,15 @@ app.set('view engine', '.hbs');
 app.use((req,res,next) =>{
   app.locals.success=req.flash('success');
   app.locals.message=req.flash('message');
-  app.locals.user =req.user;
+  if (req.user) {
+    app.locals.user = req.user;
+  }else{
+    console.log("Error en la autenticacion ,eres crak");
+    console.log(req.user);
+  }
   next(); 
 });
+
 // Routes
 app.use(authenticationRoutes);
 app.use('/links', linksRoutes);
