@@ -45,7 +45,7 @@ router.get('/profile', isLoggedIn, (req, res) => {
     });
 });
 
-router.get ('/users', async (req, res)=>{
+router.get ('/users',isLoggedIn, async (req, res)=>{
  
   const [usuarios] = await pool.query('SELECT * FROM users');
   const userIds = [usuarios].map(user => user.id); // extract the IDs from the users array
@@ -58,7 +58,7 @@ router.get ('/users', async (req, res)=>{
     
     return { ...user, links: userLinks };
   });
-  console.log(user);
+
   console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
   console.log(usersWithLinks);
   res.render('admin/users', { usuarios: usersWithLinks });
