@@ -29,10 +29,10 @@ router.post('/signin', isNotLoggedIn,(req, res, next) => {
 });
 
 router.get('/profile', isLoggedIn, (req, res) => {
-    console.log("profile errrror");
-    console.log(req.user);
+  /*   console.log("profile errrror");
+    console.log(req.user[0]);
     console.log("profile errrro");
-
+ */
     res.render('profile');
   });
 
@@ -40,21 +40,27 @@ router.get('/profile', isLoggedIn, (req, res) => {
   router.get("/logout",isLoggedIn, (req, res, next) => {
     req.logOut(req.user, err => {
         if(err) return next(err);
-        res.redirect("/signin");  
+        res.redirect("/signin");
+        console.log("todo hido despues de cerrar sesion")  
     });
 });
 
 router.get ('/users', async (req, res)=>{
  
-  const usuarios = await pool.query('SELECT * FROM users');
-  const userIds = usuarios.map(user => user.id); // extract the IDs from the users array
+  const [usuarios] = await pool.query('SELECT * FROM users');
+  const userIds = [usuarios].map(user => user.id); // extract the IDs from the users array
   const links = await pool.query('SELECT * FROM links WHERE user_id IN (?)', [userIds]);
 
   const usersWithLinks = usuarios.map(user => {
     const userLinks = links.filter(link => link.user_id === user.id);
+
+    
+    
     return { ...user, links: userLinks };
   });
-
+  console.log(user);
+  console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+  console.log(usersWithLinks);
   res.render('admin/users', { usuarios: usersWithLinks });
 });
 

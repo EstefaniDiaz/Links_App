@@ -70,9 +70,11 @@ app.use((req,res,next) =>{
   app.locals.message=req.flash('message');
   if (req.user) {
     app.locals.user = req.user;
-  }else{
-    console.log("Error en la autenticacion ,eres crak");
+    console.log("NO hay error XD");
     console.log(req.user);
+  }else{
+
+    console.log("ERROR EN APP.JS POR LOCALS USER SESSION")
   }
   next(); 
 });
