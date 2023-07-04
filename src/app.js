@@ -68,14 +68,7 @@ app.set('view engine', '.hbs');
 app.use((req,res,next) =>{
   app.locals.success=req.flash('success');
   app.locals.message=req.flash('message');
-  if (req.user) {
-    app.locals.user = req.user;
-    console.log("NO hay error XD");
-    console.log(req.user);
-  }else{
-
-    console.log("ERROR EN APP.JS POR LOCALS USER SESSION")
-  }
+  app.locals.user = req.user;  
   next(); 
 });
 
