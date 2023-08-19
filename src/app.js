@@ -2,21 +2,15 @@ import express from "express";
 import morgan from "morgan";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-
 import  pool  from './db.js';
 import { DB_HOST, DB_USER, DB_PASSWORD, DB_PORT, DB_DATABASE } from "./config.js";
 import exphbs from 'express-handlebars';
 import path from 'path';
 import flash from 'connect-flash';
 import session from 'express-session';
-
-
 import MySQLStoreModule from 'express-mysql-session';
 const MySQLStore = MySQLStoreModule(session);
-
 import passport from 'passport';
-
-
 import indexRoutes from "./routes/index.js";
 
 import helpers  from "./lib/handlebars.js";
@@ -30,6 +24,7 @@ import './lib/passport.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+app.use(express.static('public'));
 
 // Middlewares
 app.use(morgan("dev"));
@@ -51,6 +46,7 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session()); 
+
 
 //setting
 app.set('views',path.join(__dirname, 'views'))// les dice donde se encuentra la carpeta views

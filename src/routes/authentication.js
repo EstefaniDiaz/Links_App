@@ -59,8 +59,7 @@ router.get ('/users',isLoggedIn, async (req, res)=>{
     return { ...user, links: userLinks };
   });
 
-  console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-  console.log(usersWithLinks);
+  
   res.render('admin/users', { usuarios: usersWithLinks });
 });
 
